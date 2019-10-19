@@ -1,0 +1,9 @@
+.DS_Store
+.env
+.next
+*.profile
+node_modules
+workspace
+yarn-error.log
+.idea/
+.vscode
