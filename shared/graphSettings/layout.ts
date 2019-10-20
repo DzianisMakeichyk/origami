@@ -23,10 +23,10 @@ export default graphql(query, {
   options: () => ({
     variables: {
       url: '/',
-      id: __appConfig.TENANT_ID
+      id: 'demo',
     }
   }),
-  props: ({ data }) => {
+  props: ({ data }: any) => {
     if (!data || data.loading) {
       return data;
     }

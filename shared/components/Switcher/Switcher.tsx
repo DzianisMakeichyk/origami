@@ -7,15 +7,37 @@ import {
   RadioWrapper
 } from './SwitcherStyles';
 
-const Switcher = ({ dimensions, selectedVariant, onDimensionValueChange }) => (
+interface SwitcherProps {
+  dimensions?: object[];
+  onDimensionValueChange?: any;
+  selectedVariant?: any;
+}
+
+interface DimensionsProps {
+  id?: number;
+  name?: string;
+  values?: object[];
+}
+
+interface DimensionsValuesProps {
+  id?: number;
+  name?: string;
+  value?: any;
+}
+
+const Switcher = ({
+  dimensions,
+  onDimensionValueChange,
+  selectedVariant,
+}: SwitcherProps) => (
   <Outer>
-    {dimensions.map(d => (
+    {!!dimensions && dimensions.map((d: DimensionsProps) => (
       <VarinatName key={d.id}>
         <span>{d.name}:</span>
         <Values>
-          {d.values.map(value => {
+          {d.values.map((value: DimensionsValuesProps) => {
             const attr = selectedVariant.attributes.find(
-              a => a.attribute_key === d.name
+              (a: any) => a.attribute_key === d.name
             );
             return (
               <RadioWrapper
@@ -23,7 +45,7 @@ const Switcher = ({ dimensions, selectedVariant, onDimensionValueChange }) => (
               >
                 <InputRadio
                   type="radio"
-                  id={value.id}
+                  id={value.id + value.name.replace('', '-')}
                   name={value.name}
                   checked={attr && attr.attribute_value === value.name}
                   onChange={() =>
@@ -33,7 +55,7 @@ const Switcher = ({ dimensions, selectedVariant, onDimensionValueChange }) => (
                     })
                   }
                 />
-                <Label htmlFor={value.id} >
+                <Label htmlFor={value.id + value.name.replace('', '-')}>
                   {value.name}
                 </Label>
               </RadioWrapper>

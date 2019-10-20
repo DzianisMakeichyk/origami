@@ -41,13 +41,13 @@ export const Price = styled.span`
   top: 0;
 `;
 
-export const PriceName = styled.p`
+export const ProductName = styled.p`
   color: ${styles.colors.grayMiddle};
   font-size: 17px;
   font-weight: 100;
 `;
 
-export const Product = styled.div`
+export const ProductContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto 150px;
 
@@ -55,6 +55,7 @@ export const Product = styled.div`
     margin: 0 auto 25px;
   }
 `;
+
 export const ProductWrapper = styled.div`
   align-items: center;
   background: ${styles.colors.white};

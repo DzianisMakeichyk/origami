@@ -3,24 +3,28 @@ import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
 import globalStyle from '../shared/ui/global';
-
-import { TENANT_ID, API_URL } from '../server/config';
+// tslint:disable-next-line
+// import { TALENT_ID, API_URL } from '../server/config';
 
 // These settings will be exposed to the world
 const clientConfig = {
-  TENANT_ID,
-  API_URL
+  TALENT_ID: process.env.TALENT_ID,
+  API_URL: process.env.API_URL,
 };
 
-export default class MyDocument extends Document {
-  static async getInitialProps(ctx) {
+interface MyDocumentProps {
+  styleTags?: any,
+}
+
+export default class MyDocument extends Document<MyDocumentProps> {
+  static async getInitialProps(ctx: any) {
     const sheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
 
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: App => props => sheet.collectStyles(<App {...props} />)
+          enhanceApp: (App: any) => (props: any) => sheet.collectStyles(<App {...props} />)
         });
 
       const initialProps = await Document.getInitialProps(ctx);

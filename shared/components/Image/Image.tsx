@@ -1,8 +1,12 @@
-import React from 'react';
-
 import { ImageContainer } from './imageStyles';
 
-const Image = ({ alt, src, srcMobile }) => (
+interface ImageProps {
+  alt?: string;
+  src?: string;
+  srcMobile?: string;
+}
+
+const Image = ({ alt, src, srcMobile }: ImageProps) => (
   <ImageContainer>
     <picture>
       <source media="(max-width: 700px)"

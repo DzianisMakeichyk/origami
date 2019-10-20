@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
 export const Outer = styled.div`
@@ -9,8 +9,12 @@ export const Outer = styled.div`
   align-items: center;
 `;
 
-export default class Error extends React.Component {
-  static getInitialProps({ res, err }) {
+interface ErrorProps {
+  statusCode?: any;
+}
+
+export default class Error extends Component<ErrorProps> {
+  static getInitialProps({ res, err }: any) {
     if (res) {
       return { statusCode: res.statusCode };
     }
@@ -22,6 +26,7 @@ export default class Error extends React.Component {
 
   render() {
     const { statusCode } = this.props;
+
     return (
       <Outer>
         {statusCode

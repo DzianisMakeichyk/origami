@@ -1,0 +1,23 @@
+{
+  "extends": [
+    "tslint-config-airbnb",
+    "tslint-react",
+    "tslint-react-hooks"
+  ],
+  "rules": {
+    "import-name": false,
+    "jsx-no-multiline-js": false,
+    "variable-name": {
+      "options": [
+        "allow-pascal-case"
+      ]
+    }
+  },
+  "linterOptions": {
+    "exclude": [
+      "node_modules",
+      "node_modules/*",
+      "node_modules/**"
+    ]
+  }
+}

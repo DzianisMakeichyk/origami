@@ -1,27 +1,36 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Head from 'next/head';
-import Router from 'next/router';
+// import Router from 'next/router';
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import GraphData from '../../graphSettings/layout';
 
-Router.onRouteChangeComplete = () => {
-  if (window.dataLayer) {
-    window.dataLayer.push({
-      event: 'pageview'
-    });
-  }
-};
+interface LayoutProps {
+  children?: ReactNode,
+  description?: string,
+  loading?: boolean,
+  tenant?: TenantProps,
+  data?: any,
+}
+
+interface TenantProps {
+  company_name?: string;
+}
 
 const Layout = ({
   children,
-  tenant,
-  title,
   description,
   loading,
-}) => {
+  tenant,
+  data,
+}: LayoutProps) => {
   let displayTitle = tenant ? tenant.company_name : '';
+  let title = 'Hello';
+
+  if (data && data.catalogue) {
+    title = data.catalogue.product.name;
+  }
 
   if (title) {
     displayTitle = `${title} - ${displayTitle}`;
@@ -38,7 +47,7 @@ const Layout = ({
       </Head>
       <Header />
       <main>
-        {loading ? <div>{children || 'Loading...'}</div> : children}
+        {loading ? 'Loading...' : children}
       </main>
       <Footer />
     </>

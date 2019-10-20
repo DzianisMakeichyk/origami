@@ -2,7 +2,7 @@
 const {
   NODE_ENV = 'development',
   PORT,
-  TENANT_ID,
+  TALENT_ID,
   API_URL
 } = process.env;
 
@@ -12,7 +12,7 @@ global.__appConfig = {
   NODE_ENV,
   PORT: parseInt(PORT, 10),
   HOST_NAME: `http://localhost:${PORT}`,
-  TENANT_ID,
+  TALENT_ID,
   API_URL,
   DEV
 };

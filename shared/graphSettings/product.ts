@@ -34,17 +34,18 @@ export default {
     }
   `,
 
-  options: ctx => {
+  options: (ctx: any) => {
     const { router } = ctx;
+
     return {
       variables: {
         url: router.asPath || router.pathname,
-        id: __appConfig.TENANT_ID
+        id: 'demo',
       }
     };
   },
 
-  props: props => {
+  props: (props: any) => {
     const { data } = props;
     const { catalogue } = data;
 

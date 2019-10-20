@@ -5,24 +5,65 @@ import { graphql } from 'react-apollo';
 import Button from '../shared/components/Button';
 import Image from '../shared/components/Image';
 import Layout from '../shared/components/Layout/Layout';
-import Variants from '../shared/components/Switcher';
+import Switcher from '../shared/components/Switcher';
 
 import graphSettings from '../shared/graphSettings/product';
 import {
-  Product,
+  ProductContainer,
   ProductFooter,
   ProductImageWrapper,
   ProductInfo,
   ProductWrapper,
   TextHeading,
-} from '../shared/components/product/ProductStyles';
+} from '../shared/components/Product/ProductStyles';
 
-class ProductPage extends Component {
-  static getDerivedStateFromProps(nextProps, prevState) {
+interface ProductPageProps {
+  data?: ProductPageDataProps;
+  nextProps?: any;
+  prevState?: any;
+}
+
+interface ProductPageDataProps {
+  catalogue?: ProductProps;
+  loading?: boolean;
+  error?: boolean;
+  products?: object[];
+}
+
+interface ProductProps {
+  product?: ProductDetailsProps;
+}
+
+interface ProductDetailsProps {
+  name?: string;
+  product_image?: string;
+  product_image_resized?: string;
+  variations?: object[];
+}
+
+interface DimensionValueProps {
+  dimension?: ProductPageDimensionProps;
+  value?: ProductPageValueProps;
+}
+
+interface ProductPageDimensionProps {
+  id?: number;
+  name?: string;
+  values?: object[];
+}
+
+interface ProductPageValueProps {
+  id?: number;
+  name?: string;
+  values?: object[];
+}
+
+class ProductPage extends Component<ProductPageProps> {
+  static getDerivedStateFromProps( nextProps: any, prevState: any ) {
     if (prevState && prevState.selectedVariant) {
       return {};
     }
-    
+
     const { catalogue } = nextProps.data;
 
     if (!catalogue) {
@@ -39,7 +80,7 @@ class ProductPage extends Component {
 
     if (product.default_variation_id) {
       selectedVariant = product.variations.find(
-        v => v.id === product.default_variation_id,
+        (v: any) => v.id === product.default_variation_id,
       );
     }
 
@@ -53,13 +94,13 @@ class ProductPage extends Component {
 
   }
 
-  state = {
+  state: any = {
     selectedVariant: null,
   };
 
-  onDimensionValueChange = ({ dimension, value }) => {
+  onDimensionValueChange = ({ dimension, value }: DimensionValueProps) => {
     const { selectedVariant } = this.state;
-    const newAttributes = selectedVariant.attributes.map(attr => {
+    const newAttributes = selectedVariant.attributes.map((attr: any) => {
       if (attr.attribute_key !== dimension.name) {
         return attr;
       }
@@ -72,12 +113,12 @@ class ProductPage extends Component {
 
     const { data } = this.props;
     const { product } = data.catalogue;
-    const matchedVariant = product.variations.find(v => {
+    const matchedVariant = product.variations.find((v: any) => {
       let match = true;
-      newAttributes.forEach(attr => {
+      newAttributes.forEach((attr: any) => {
         if (
           !v.attributes.find(
-            a =>
+            (a: any) =>
               a.attribute_key === attr.attribute_key &&
               a.attribute_value === attr.attribute_value
           )
@@ -102,7 +143,7 @@ class ProductPage extends Component {
     const { product } = catalogue;
 
     return (
-      <Product itemScope itemType="http://schema.org/Product">
+      <ProductContainer itemScope itemType="http://schema.org/Product">
         <ProductWrapper>
           <ProductImageWrapper>
             <Image
@@ -115,25 +156,25 @@ class ProductPage extends Component {
           <ProductInfo>
             <TextHeading itemProp="name">{product.name}</TextHeading>
 
-            <Variants
+            <Switcher
               {...product}
               selectedVariant={selectedVariant}
               onDimensionValueChange={this.onDimensionValueChange}
             />
 
             <ProductFooter>
-              <Button price={selectedVariant.price_ex_vat}>
+              <Button price={selectedVariant && selectedVariant.price_ex_vat}>
                 Add to basket
               </Button>
             </ProductFooter>
           </ProductInfo>
         </ProductWrapper>
-      </Product>
+      </ProductContainer>
     );
   }
 }
 
-class ProductPageDataLoader extends React.Component {
+class ProductPageDataLoader extends Component<ProductPageProps> {
   static graph = graphSettings;
 
   render() {
@@ -141,24 +182,19 @@ class ProductPageDataLoader extends React.Component {
     const { loading, error } = data;
 
     if (loading) {
-      return <Layout {...this.props} loading />;
+      return <Layout {...this.props} />;
     }
 
     if (error) {
       return (
-        <Layout {...this.props} error>
+        <Layout {...this.props}>
           Error getting product
         </Layout>
       );
     }
 
-    let title = 'Loading';
-    if (data.catalogue) {
-      title = data.catalogue.product.name;
-    }
-
     return (
-      <Layout {...this.props} title={title}>
+      <Layout {...this.props}>
         <ProductPage {...this.props} />
       </Layout>
     );
