@@ -1,10 +1,8 @@
 import React, { ReactNode } from 'react';
 import Head from 'next/head';
-// import Router from 'next/router';
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import GraphData from '../../graphSettings/layout';
 
 interface LayoutProps {
   children?: ReactNode,
@@ -54,4 +52,4 @@ const Layout = ({
   )
 }
 
-export default GraphData(Layout);
+export default Layout;
